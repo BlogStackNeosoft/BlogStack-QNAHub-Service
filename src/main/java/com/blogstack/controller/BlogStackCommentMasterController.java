@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Validated
-@RequestMapping("/comment")
+@RequestMapping("${service-version}/comment")
 @CrossOrigin(origins = "*")
 public class BlogStackCommentMasterController {
     @Autowired

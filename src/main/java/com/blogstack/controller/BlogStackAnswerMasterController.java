@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Validated
-@RequestMapping("/answer")
+@RequestMapping("${service-version}/answer")
 @AllArgsConstructor
 public class BlogStackAnswerMasterController {
     
