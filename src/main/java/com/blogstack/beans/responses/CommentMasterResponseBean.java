@@ -18,14 +18,17 @@ import java.time.LocalDateTime;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommentMasterResponseBean {
+
     @JsonProperty(value="comment_id")
     private  String commentId;
+
     @NotNull(message="Comment cannot be empty")
     private  String comment;
 
     private  String status;
     @JsonProperty(value = "upvote")
     private Long upvote;
+
     @JsonProperty(value = "downvote")
     private Long downvote;
 
@@ -36,5 +39,4 @@ public class CommentMasterResponseBean {
     @JsonProperty(value="modified_on")
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = BlogStackCommonConstants.DATE_FORMAT)
     private LocalDateTime modifiedOn;
-
 }

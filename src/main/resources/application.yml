@@ -7,12 +7,13 @@ spring:
 
   datasource:
     url: jdbc:postgresql://ec2-3-84-24-210.compute-1.amazonaws.com:5432/BlogStackMaster
+#    url: jdbc:postgresql://localhost:5432/BlogStackMaster
     username: postgres
     password: root
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
 #  liquibase:
 #    change-log: classpath:db/changelog/changelog.sql

@@ -18,35 +18,44 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "blogstack-comment_master" ,schema = "master_data")
+@Table(name = "blogstack-comment_master", schema = "master_data")
 public class BlogStackCommentMaster implements Serializable {
+
     private static final Long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="bscm_seq_id")
-    private  long bscmSeqId;
-    @Column(name="bscm_comment_id")
-    private  String bscmCommentId;
+    @Column(name = "bscm_seq_id")
+    private long bscmSeqId;
+
+    @Column(name = "bscm_comment_id")
+    private String bscmCommentId;
+
     @Column(name = "bscm_comment")
-    private  String bscmComment;
-    @Column(name="bscm_upvote")
-    private  Long bscmUpvote;
+    private String bscmComment;
+
+    @Column(name = "bscm_upvote")
+    private Long bscmUpvote;
+
     @Column(name = "bscm_downvote")
-    private  Long bscmDownvote;
+    private Long bscmDownvote;
+
     @Column(name = "bscm_status")
-    private  String bscmStatus;
+    private String bscmStatus;
+
     @CreatedBy
     @Column(name = "bscm_created_by")
-    private  String bscmCreatedBy;
+    private String bscmCreatedBy;
+
     @CreatedDate
     @Column(name = "bscm_created_date")
     private LocalDateTime bscmCreatedDate;
+
     @LastModifiedBy
     @Column(name = "bscm_modified_by")
     private String bscmModifiedBy;
+
     @LastModifiedDate
     @Column(name = "bscm_modified_date")
     private LocalDateTime bscmModifiedDate;
-
-
 }

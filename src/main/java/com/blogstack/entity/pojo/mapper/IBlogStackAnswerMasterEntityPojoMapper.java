@@ -4,6 +4,7 @@ import com.blogstack.beans.responses.AnswerMasterResponseBean;
 import com.blogstack.entities.BlogStackAnswerMaster;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -12,16 +13,18 @@ public interface IBlogStackAnswerMasterEntityPojoMapper {
             .answerId(blogStackAnswerMaster.getBsamAnswerId())
             .answer(blogStackAnswerMaster.getBsamAnswer())
             .status(blogStackAnswerMaster.getBsamStatus())
+            .comments(IBlogStackCommentMasterEntityPojoMapper.mapCommentMasterEntityListToPojoListMapping.apply(blogStackAnswerMaster.getBlogStackCommentMastersList()))
             .addedOn(blogStackAnswerMaster.getBsamCreatedDate())
             .build();
 
-    public static Function<List<BlogStackAnswerMaster>, List<AnswerMasterResponseBean>> mapAnswerMasterEntityListToPojoListMapping = blogStackAnswerMasterList -> blogStackAnswerMasterList.stream()
+    public static Function<Set<BlogStackAnswerMaster>, Set<AnswerMasterResponseBean>> mapAnswerMasterEntityListToPojoListMapping = blogStackAnswerMasterList -> blogStackAnswerMasterList.stream()
             .map(blogStackAnswerMaster -> {
                 AnswerMasterResponseBean.AnswerMasterResponseBeanBuilder answerMasterResponseBeanBuilder = AnswerMasterResponseBean.builder();
                 answerMasterResponseBeanBuilder.answerId(blogStackAnswerMaster.getBsamAnswerId())
                         .answer(blogStackAnswerMaster.getBsamAnswer())
                         .status(blogStackAnswerMaster.getBsamStatus())
+                        .comments(IBlogStackCommentMasterEntityPojoMapper.mapCommentMasterEntityListToPojoListMapping.apply(blogStackAnswerMaster.getBlogStackCommentMastersList()))
                         .addedOn(blogStackAnswerMaster.getBsamCreatedDate());
                 return answerMasterResponseBeanBuilder.build();
-            }).collect(Collectors.toList());
+            }).collect(Collectors.toSet());
 }

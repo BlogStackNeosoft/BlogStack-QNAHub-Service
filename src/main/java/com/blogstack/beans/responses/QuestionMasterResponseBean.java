@@ -44,7 +44,7 @@ public class QuestionMasterResponseBean {
     private String subCategoryId;
 
     @JsonProperty(value = "answers")
-    private Set<BlogStackAnswerMaster> blogStackAnswers;
+    private Set<AnswerMasterResponseBean> blogStackAnswers;
 
     @JsonProperty(value = "added_on")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = BlogStackCommonConstants.DATE_FORMAT)
