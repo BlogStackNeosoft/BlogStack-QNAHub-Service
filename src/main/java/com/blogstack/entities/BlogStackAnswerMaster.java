@@ -15,6 +15,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -33,7 +34,7 @@ public class BlogStackAnswerMaster implements Serializable {
     @Column(name = "bsam_seq_id")
     private Long bsamSeqId;
 
-    @Column(name = "bsam_answer_id", columnDefinition = "TEXT")
+    @Column(name = "bsam_answer_id")
     @JsonProperty(value = "answer_id")
     private String bsamAnswerId;
 
@@ -64,5 +65,10 @@ public class BlogStackAnswerMaster implements Serializable {
     @Column(name = "bsam_modified_date")
     @JsonIgnore
     private LocalDateTime bsamModifiedDate;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "bsam_answer_id", referencedColumnName = "bsam_answer_id")
+    private Set<BlogStackCommentMaster> blogStackCommentMastersList;
+
 
 }
