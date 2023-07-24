@@ -35,6 +35,9 @@ public class BlogStackAnswerMaster implements Serializable {
     @Column(name = "bsam_answer", columnDefinition = "TEXT")
     private String bsamAnswer;
 
+    @Column(name = "bsam_user_id")
+    private String bsamUserId;
+
     @Column(name = "bsam_status")
     private String bsamStatus;
 

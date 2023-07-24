@@ -53,6 +53,10 @@ public class BlogStackQuestionMaster implements Serializable {
     @Column(name = "bsqm_status")
     private String bsqmStatus;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "bsam_question_id", referencedColumnName = "bsqm_question_id")
+    private Set<BlogStackAnswerMaster> blogStackAnswerMasterList;
+
     @CreatedBy
     @Column(name = "bsqm_created_by")
     private String bsqmCreatedBy;
@@ -68,8 +72,4 @@ public class BlogStackQuestionMaster implements Serializable {
     @LastModifiedDate
     @Column(name = "bsqm_modified_date")
     private LocalDateTime bsqmModifiedDate;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "bsam_question_id", referencedColumnName = "bsqm_question_id")
-    private Set<BlogStackAnswerMaster> blogStackAnswerMasterList;
 }

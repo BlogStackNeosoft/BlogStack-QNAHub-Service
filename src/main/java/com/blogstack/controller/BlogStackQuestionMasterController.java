@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Validated
-@RequestMapping("${service-version}/question")
+@RequestMapping("${qnahub-service-version}/question")
 @AllArgsConstructor
 public class BlogStackQuestionMasterController {
 

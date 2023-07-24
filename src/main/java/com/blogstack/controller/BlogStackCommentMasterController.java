@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Validated
-@RequestMapping("${service-version}/comment")
+@RequestMapping("${qnahub-service-version}/comment")
 @CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class BlogStackCommentMasterController {

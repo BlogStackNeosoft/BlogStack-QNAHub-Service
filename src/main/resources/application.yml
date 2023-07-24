@@ -15,10 +15,5 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-#  liquibase:
-#    change-log: classpath:db/changelog/changelog.sql
-#    url: ${MASTER_SERVICE_DATABASE_LIQUIBASE_URL:jdbc:postgresql://localhost:5432/BlogStackMaster}
-#    user: ${MASTER_SERVICE_DATABASE_USERNAME:postgres}
-#    password: ${MASTER_SERVICE_DATABASE_PASSWORD:root}
-#    database-change-log-table: databasechangelog_blogstack_master_service
-#    database-change-log-lock-table: databasechangeloglock_blogstack_master_service
+
+qnahub-service-version: v1.0
