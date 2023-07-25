@@ -4,6 +4,7 @@ import com.blogstack.beans.responses.AnswerMasterResponseBean;
 import com.blogstack.beans.responses.QuestionMasterResponseBean;
 import com.blogstack.entities.BlogStackQuestionMaster;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -18,7 +19,8 @@ public interface IBlogStackQuestionMasterEntityPojoMapper {
             .codeSnippet(blogStackQuestionMaster.getBsqmCodeSnippet())
             .categoryId(blogStackQuestionMaster.getBsqmCategoryId())
             .subCategoryId(blogStackQuestionMaster.getBsqmSubCategoryId())
-            .blogStackAnswers((Set<AnswerMasterResponseBean>) IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackQuestionMaster.getBlogStackAnswerMasterList()))
+            //.blogStackAnswers((Set<AnswerMasterResponseBean>) IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackQuestionMaster.getBlogStackAnswerMasterList()))
+            .blogStackAnswers(blogStackQuestionMaster.getBlogStackAnswerMasterList()==null? new HashSet<AnswerMasterResponseBean>() : (Set<AnswerMasterResponseBean>) IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackQuestionMaster.getBlogStackAnswerMasterList()))
             .status(blogStackQuestionMaster.getBsqmStatus())
             .addedOn(blogStackQuestionMaster.getBsqmCreatedDate())
             .build();
