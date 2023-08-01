@@ -32,8 +32,11 @@ public class BlogStackQuestionMaster implements Serializable {
     @Column(name = "bsqm_question_id")
     private String bsqmQuestionId;
 
-    @Column(name = "bsqm_question")
-    private String bsqmQuestion;
+    @Column(name = "bsqm_content")
+    private String bsqmContent;
+
+    @Column(name = "bsqm_title")
+    private String bsqmTitle;
 
     @Column(name = "bsqm_user_id")
     private String bsqmUserId;
