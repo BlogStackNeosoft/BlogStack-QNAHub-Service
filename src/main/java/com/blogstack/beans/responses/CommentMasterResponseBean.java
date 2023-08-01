@@ -1,7 +1,6 @@
 package com.blogstack.beans.responses;
 
 import com.blogstack.commons.BlogStackCommonConstants;
-import com.blogstack.entities.BlogStackCommentMaster;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,30 +11,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AnswerMasterResponseBean {
-    @JsonProperty(value = "answer_id")
-    private String answerId;
+public class CommentMasterResponseBean {
 
-    @NotNull(message = "Answer can not be empty.")
-    private String answer;
+    @JsonProperty(value="comment_id")
+    private  String commentId;
 
-    private String status;
+    @NotNull(message="Comment cannot be empty")
+    private  String comment;
 
-    @JsonProperty(value = "comments")
-    private List<CommentMasterResponseBean> comments;
+    private  String status;
+    @JsonProperty(value = "upvote")
+    private Long upvote;
+
+    @JsonProperty(value = "downvote")
+    private Long downvote;
 
     @JsonProperty(value = "added_on")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = BlogStackCommonConstants.DATE_FORMAT)
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = BlogStackCommonConstants.DATE_FORMAT)
     private LocalDateTime addedOn;
 
-    @JsonProperty(value = "modified_on")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = BlogStackCommonConstants.DATE_FORMAT)
+    @JsonProperty(value="modified_on")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = BlogStackCommonConstants.DATE_FORMAT)
     private LocalDateTime modifiedOn;
 }

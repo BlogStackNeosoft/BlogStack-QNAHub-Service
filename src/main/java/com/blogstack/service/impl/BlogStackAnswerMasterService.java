@@ -8,7 +8,6 @@ import com.blogstack.entities.BlogStackAnswerMaster;
 import com.blogstack.entities.BlogStackQuestionMaster;
 import com.blogstack.entity.pojo.mapper.IBlogStackAnswerMasterEntityPojoMapper;
 import com.blogstack.entity.pojo.mapper.IBlogStackQuestionMasterEntityPojoMapper;
-import com.blogstack.enums.AnswerMasterStatusEnum;
 import com.blogstack.enums.UuidPrefixEnum;
 import com.blogstack.exceptions.BlogStackCustomException;
 import com.blogstack.exceptions.BlogstackDataNotFoundException;
@@ -27,13 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.*;
 
 @Service
 @Transactional
@@ -85,7 +78,7 @@ public class BlogStackAnswerMasterService implements IBlogStackAnswerMasterServi
             throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
         return Optional.of(ServiceResponseBean.builder()
-                .status(Boolean.TRUE).data(PageResponseBean.builder().payload(IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackAnswerMasterPage.toList()))
+                .status(Boolean.TRUE).data(PageResponseBean.builder().payload(IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackAnswerMasterPage.toSet()))
                         .numberOfElements(blogStackAnswerMasterPage.getNumberOfElements())
                         .pageSize(blogStackAnswerMasterPage.getSize())
                         .totalElements(blogStackAnswerMasterPage.getTotalElements())
@@ -102,8 +95,10 @@ public class BlogStackAnswerMasterService implements IBlogStackAnswerMasterServi
         if (blogStackQuestionMasterOptional.isEmpty())
             throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
-        List<BlogStackAnswerMaster> answers = new ArrayList<>(blogStackQuestionMasterOptional.get().getBlogStackAnswerMasterList());
-        return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(answers)).build());
+        Set<BlogStackAnswerMaster> blogStackAnswerMasterList = new HashSet<>(blogStackQuestionMasterOptional.get().getBlogStackAnswerMasterList());
+        LOGGER.warn("BlogStackAnswerMasterList :: {}", blogStackAnswerMasterList);
+
+        return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackAnswerMasterList)).build());
     }
 
     @Override

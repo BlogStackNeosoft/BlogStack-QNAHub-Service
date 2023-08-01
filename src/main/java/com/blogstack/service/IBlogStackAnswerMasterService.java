@@ -3,7 +3,6 @@ package com.blogstack.service;
 import com.blogstack.beans.requests.AnswerMasterRequestBean;
 import com.blogstack.beans.responses.ServiceResponseBean;
 
-
 import java.util.Optional;
 
 public interface IBlogStackAnswerMasterService {

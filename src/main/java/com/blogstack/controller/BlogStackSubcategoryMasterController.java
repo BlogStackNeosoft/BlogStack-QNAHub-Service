@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Validated
-@RequestMapping("/subcategory")
+@RequestMapping("${qnahub-service-version}/subcategory")
 @AllArgsConstructor
 public class BlogStackSubcategoryMasterController {
 

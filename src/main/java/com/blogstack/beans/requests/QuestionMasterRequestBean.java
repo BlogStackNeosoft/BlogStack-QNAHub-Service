@@ -20,7 +20,6 @@ public class QuestionMasterRequestBean {
 
     @NotNull(message = "Question can not be empty.")
     private String question;
-
     private String status;
 
     @JsonProperty(value = "user_id")
