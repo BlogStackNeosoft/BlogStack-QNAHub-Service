@@ -18,7 +18,8 @@ public interface IBlogStackQuestionMasterPojoEntityMapper {
 
     @Mappings({
             @Mapping(target = "bsqmQuestionId", source = "questionMasterRequestBean.questionId"),
-            @Mapping(target = "bsqmQuestion", source = "questionMasterRequestBean.question"),
+            @Mapping(target = "bsqmContent", source = "questionMasterRequestBean.content"),
+            @Mapping(target = "bsqmTitle", source = "questionMasterRequestBean.title"),
             @Mapping(target = "bsqmUserId", source = "questionMasterRequestBean.userId"),
             @Mapping(target = "bsqmCodeSnippet", source = "questionMasterRequestBean.codeSnippet"),
             @Mapping(target = "bsqmTagId", source = "questionMasterRequestBean.tagId"),
@@ -32,7 +33,8 @@ public interface IBlogStackQuestionMasterPojoEntityMapper {
 
     public static BiFunction<QuestionMasterRequestBean, BlogStackQuestionMaster, BlogStackQuestionMaster> updateQuestionMaster = (questionMasterRequestBean, blogStackQuestionMaster) -> {
         blogStackQuestionMaster.setBsqmQuestionId(questionMasterRequestBean.getQuestionId() != null ? questionMasterRequestBean.getQuestionId() : blogStackQuestionMaster.getBsqmQuestionId());
-        blogStackQuestionMaster.setBsqmQuestion(questionMasterRequestBean.getQuestion() != null ? questionMasterRequestBean.getQuestion() : blogStackQuestionMaster.getBsqmQuestion());
+        blogStackQuestionMaster.setBsqmContent(questionMasterRequestBean.getContent() != null ? questionMasterRequestBean.getContent() : blogStackQuestionMaster.getBsqmContent());
+        blogStackQuestionMaster.setBsqmTitle(questionMasterRequestBean.getTitle() != null ? questionMasterRequestBean.getTitle() : blogStackQuestionMaster.getBsqmTitle());
         blogStackQuestionMaster.setBsqmUserId(questionMasterRequestBean.getUserId() != null ? questionMasterRequestBean.getUserId() : blogStackQuestionMaster.getBsqmUserId());
         blogStackQuestionMaster.setBsqmCodeSnippet(questionMasterRequestBean.getCodeSnippet() != null ? questionMasterRequestBean.getCodeSnippet() : blogStackQuestionMaster.getBsqmCodeSnippet());
         blogStackQuestionMaster.setBsqmTagId(questionMasterRequestBean.getTagId() != null ? questionMasterRequestBean.getTagId() : blogStackQuestionMaster.getBsqmTagId());
