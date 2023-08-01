@@ -12,4 +12,6 @@ public interface IBlogStackCategoryMasterRepository extends JpaRepository<BlogSt
     Optional<BlogStackCategoryMaster> findByBscmCategoryIgnoreCase(String category);
 
     Optional<BlogStackCategoryMaster> findByBscmCategoryId(String categoryId);
+
+
 }

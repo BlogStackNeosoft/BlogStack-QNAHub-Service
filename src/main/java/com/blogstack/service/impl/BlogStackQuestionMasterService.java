@@ -1,9 +1,11 @@
 package com.blogstack.service.impl;
 
+import com.blogstack.beans.requests.CategoryMasterRequestBean;
 import com.blogstack.beans.requests.QuestionMasterRequestBean;
 import com.blogstack.beans.responses.PageResponseBean;
 import com.blogstack.beans.responses.ServiceResponseBean;
 import com.blogstack.commons.BlogStackMessageConstants;
+import com.blogstack.entities.BlogStackCategoryMaster;
 import com.blogstack.entities.BlogStackQuestionMaster;
 import com.blogstack.entity.pojo.mapper.IBlogStackQuestionMasterEntityPojoMapper;
 import com.blogstack.enums.AnswerMasterStatusEnum;
@@ -13,7 +15,9 @@ import com.blogstack.exceptions.BlogStackCustomException;
 import com.blogstack.exceptions.BlogstackDataNotFoundException;
 import com.blogstack.pojo.entity.mapper.IBlogStackQuestionMasterPojoEntityMapper;
 import com.blogstack.repository.IBlogStackAnswerMasterRepository;
+import com.blogstack.repository.IBlogStackCategoryMasterRepository;
 import com.blogstack.repository.IBlogStackQuestionMasterRepository;
+import com.blogstack.service.IBlogStackCategoryMasterService;
 import com.blogstack.service.IBlogStackQuestionMasterService;
 import com.blogstack.utils.BlogStackCommonUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -42,6 +46,12 @@ public class BlogStackQuestionMasterService implements IBlogStackQuestionMasterS
     @Autowired
     private IBlogStackAnswerMasterRepository blogStackAnswerMasterRepository;
 
+    @Autowired
+    private IBlogStackCategoryMasterRepository blogStackCategoryMasterRepository;
+
+    @Autowired
+    private IBlogStackCategoryMasterService blogStackCategoryMasterService;
+
     @Override
     public Optional<ServiceResponseBean> addQuestion(QuestionMasterRequestBean questionMasterRequestBean) {
         Optional<BlogStackQuestionMaster> blogStackQuestionMasterOptional = this.blogStackQuestionMasterRepository.findByBsqmQuestionIgnoreCase(questionMasterRequestBean.getQuestion());
@@ -55,6 +65,11 @@ public class BlogStackQuestionMasterService implements IBlogStackQuestionMasterS
 
         questionMasterRequestBean.setQuestionId(questionId);
         questionMasterRequestBean.setCreatedBy(springApplicationName);
+        // checking if category exists
+        Optional<BlogStackCategoryMaster> category = this.blogStackCategoryMasterRepository.findByBscmCategoryIgnoreCase(questionMasterRequestBean.getCategoryId());
+        if(category.isEmpty())
+        this.blogStackCategoryMasterService.addCategory(CategoryMasterRequestBean.builder().category(questionMasterRequestBean.getCategoryId()).build());
+
         BlogStackQuestionMaster blogStackQuestionMaster = this.blogStackQuestionMasterRepository.saveAndFlush(IBlogStackQuestionMasterPojoEntityMapper.INSTANCE.questionMasterRequestToQuestionMasterEntity(questionMasterRequestBean));
         return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(IBlogStackQuestionMasterEntityPojoMapper.mapQuestionMasterEntityPojoMapping.apply(blogStackQuestionMaster)).build());
     }
