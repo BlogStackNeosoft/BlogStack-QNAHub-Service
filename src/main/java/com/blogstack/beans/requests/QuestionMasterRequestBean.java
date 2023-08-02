@@ -18,8 +18,12 @@ public class QuestionMasterRequestBean {
     @JsonProperty(value = "question_id")
     private String questionId;
 
-    @NotNull(message = "Question can not be empty.")
-    private String question;
+    @NotNull(message = "Question content can not be empty.")
+    private String content;
+
+    @NotNull(message = "Question title can not be empty.")
+    private String title;
+
     private String status;
 
     @JsonProperty(value = "user_id")

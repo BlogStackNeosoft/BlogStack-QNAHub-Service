@@ -54,7 +54,7 @@ public class BlogStackQuestionMasterService implements IBlogStackQuestionMasterS
 
     @Override
     public Optional<ServiceResponseBean> addQuestion(QuestionMasterRequestBean questionMasterRequestBean) {
-        Optional<BlogStackQuestionMaster> blogStackQuestionMasterOptional = this.blogStackQuestionMasterRepository.findByBsqmQuestionIgnoreCase(questionMasterRequestBean.getQuestion());
+        Optional<BlogStackQuestionMaster> blogStackQuestionMasterOptional = this.blogStackQuestionMasterRepository.findByBsqmTitleIgnoreCase(questionMasterRequestBean.getTitle());
         LOGGER.warn("BlogStackQuestionMasterOptional :: {}", blogStackQuestionMasterOptional);
 
         if(blogStackQuestionMasterOptional.isPresent())

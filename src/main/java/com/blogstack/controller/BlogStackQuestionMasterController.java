@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RequestMapping("${qnahub-service-version}/question")
 @AllArgsConstructor
+@CrossOrigin("*")
 public class BlogStackQuestionMasterController {
 
     private final IBlogStackQuestionMasterService blogStackQuestionMasterService;
