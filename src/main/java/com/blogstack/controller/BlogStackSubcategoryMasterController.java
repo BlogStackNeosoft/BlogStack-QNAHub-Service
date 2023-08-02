@@ -17,9 +17,9 @@ public class BlogStackSubcategoryMasterController {
 
     private final IBlogStackSubcategoryMasterService blogStackSubcategoryMasterService;
 
-    @PostMapping("/")
-    public ResponseEntity<?> addSubcategory(@Valid @RequestBody SubcategoryMasterRequestBean subcategoryMasterRequestBean){
-        return ResponseEntity.ok(this.blogStackSubcategoryMasterService.addSubcategory(subcategoryMasterRequestBean));
+    @PostMapping("/category/{categoryId}")
+    public ResponseEntity<?> addSubcategory(@PathVariable("categoryId") @NotBlank(message = "Category Id can not be blank") String categoryId ,@Valid @RequestBody SubcategoryMasterRequestBean subcategoryMasterRequestBean){
+        return ResponseEntity.ok(this.blogStackSubcategoryMasterService.addSubcategory(categoryId,subcategoryMasterRequestBean));
     }
 
     @GetMapping("/")
@@ -44,7 +44,7 @@ public class BlogStackSubcategoryMasterController {
     }
 
     @GetMapping("/category_id/{category_id}")
-    public ResponseEntity<?> fetchSubcategoryByICategoryId(@PathVariable(value = "category_id") @NotBlank(message = "category Id can not be empty.") String categoryId){
-        return ResponseEntity.ok(this.blogStackSubcategoryMasterService.fetchSubcategoryByCategoryId(categoryId));
+    public ResponseEntity<?> fetchAllSubcategoriesByCategoryId(@PathVariable(value = "category_id") @NotBlank(message = "category Id can not be empty.") String categoryId){
+        return ResponseEntity.ok(this.blogStackSubcategoryMasterService.fetchAllSubcategoriesByCategoryId(categoryId));
     }
 }

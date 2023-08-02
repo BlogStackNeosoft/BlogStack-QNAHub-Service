@@ -7,13 +7,13 @@ import java.util.Optional;
 
 public interface IBlogStackSubcategoryMasterService {
 
-    Optional<ServiceResponseBean> addSubcategory(SubcategoryMasterRequestBean subcategoryMasterRequestBean);
+    Optional<ServiceResponseBean> addSubcategory(String categoryId,SubcategoryMasterRequestBean subcategoryMasterRequestBean);
 
     Optional<ServiceResponseBean> fetchSubcategoryById(String subcategoryId);
 
     Optional<ServiceResponseBean> fetchAllSubcategories(Integer page, Integer size);
 
-    Optional<ServiceResponseBean> fetchSubcategoryByCategoryId(String categoryId);
+    Optional<ServiceResponseBean> fetchAllSubcategoriesByCategoryId(String categoryId);
 
     Optional<ServiceResponseBean> deleteSubcategory(String subcategoryId);
 

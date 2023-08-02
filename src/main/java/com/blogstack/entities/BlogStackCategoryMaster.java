@@ -12,6 +12,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -51,5 +52,9 @@ public class BlogStackCategoryMaster implements Serializable {
     @LastModifiedDate
     @Column(name = "bscm_modified_date")
     private LocalDateTime bscmModifiedDate;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
+    @JoinColumn(name ="bscm_category_id", referencedColumnName= "bscm_category_id" )
+    private Set<BlogStackSubcategoryMaster> blogStackSubcategoryMasterList;
 
 }
