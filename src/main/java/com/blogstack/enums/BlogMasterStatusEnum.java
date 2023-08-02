@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public enum BlogsStatusEnum {
+public enum BlogMasterStatusEnum {
     ACTIVE("ACTIVE"),
     INACTIVE("INACTIVE"),
     DELETED("DELETED");
@@ -15,6 +15,6 @@ public enum BlogsStatusEnum {
     private String value;
 
     public static List<String> getAllValues() {
-        return List.of(BlogsStatusEnum.values()).stream().map(data -> data.value).collect(Collectors.toList());
+        return List.of(BlogMasterStatusEnum.values()).stream().map(data -> data.value).collect(Collectors.toList());
     }
 }
