@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Validated
 @RequestMapping("${qnahub-service-version}/comment")
-@CrossOrigin(origins = "*")
+// @CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class BlogStackCommentMasterController {
 

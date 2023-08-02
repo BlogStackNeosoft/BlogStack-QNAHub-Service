@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RequestMapping("${qnahub-service-version}/category")
 @AllArgsConstructor
-@CrossOrigin("*")
+// @CrossOrigin("*")
 public class BlogStackCategoryMasterController {
     @Autowired
 
