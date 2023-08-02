@@ -2,7 +2,9 @@ package com.blogstack.pojo.entity.mapper;
 
 
 import com.blogstack.beans.requests.BlogMasterRequestBean;
+import com.blogstack.beans.requests.QuestionMasterRequestBean;
 import com.blogstack.entities.BlogStackBlogsMaster;
+import com.blogstack.entities.BlogStackQuestionMaster;
 import com.blogstack.enums.BlogMasterStatusEnum;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,6 +12,7 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDateTime;
+import java.util.function.BiFunction;
 
 @Mapper(componentModel = "spring", imports = {LocalDateTime.class, BlogMasterStatusEnum.class})
 public interface IBlogStackBlogMasterPojoEntityMapper {
@@ -26,6 +29,17 @@ public interface IBlogStackBlogMasterPojoEntityMapper {
             @Mapping(target = "bsbCreatedBy", source = "blogsMasterRequestBean.createdBy"),
             @Mapping(target = "bsbCreatedDate", expression = "java(LocalDateTime.now())")
     })
-    BlogStackBlogsMaster blogMasterRequestToQuestionMasterEntity(BlogMasterRequestBean blogsMasterRequestBean);
+    BlogStackBlogsMaster blogMasterRequestToBlogMasterEntity(BlogMasterRequestBean blogsMasterRequestBean);
 
-}
+    public static BiFunction<BlogMasterRequestBean, BlogStackBlogsMaster, BlogStackBlogsMaster> updateBlogMaster = (blogMasterRequestBean, blogStackBlogMaster) -> {
+        blogStackBlogMaster.setBsbBlogId(blogMasterRequestBean.getBlogId());
+        blogStackBlogMaster.setBsbBlogName(blogMasterRequestBean.getBlogName());
+        blogStackBlogMaster.setBsbBlogContent(blogMasterRequestBean.getBlogContent());
+        blogStackBlogMaster.setBsbBlogPicture(blogMasterRequestBean.getBlogPicture());
+        blogStackBlogMaster.setBsbModifiedBy(blogMasterRequestBean.getModifiedBy());
+        blogStackBlogMaster.setBsbModifiedDate(LocalDateTime.now());
+        return blogStackBlogMaster;
+    };
+
+
+    }

@@ -102,6 +102,8 @@ public class BlogStackQuestionMasterService implements IBlogStackQuestionMasterS
 
         this.blogStackQuestionMasterRepository.saveAndFlush(blogStackQuestionMaster);
         return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(IBlogStackQuestionMasterEntityPojoMapper.mapQuestionMasterEntityPojoMapping.apply(blogStackQuestionMaster)).build());
+
+
     }
 
     @Override
