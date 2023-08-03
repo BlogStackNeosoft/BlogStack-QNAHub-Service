@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -26,6 +27,8 @@ public class BlogMasterResponseBean {
     @JsonProperty(value = "blog_content")
     private String blogContent;
     private String status;
+    @JsonProperty(value = "comments")
+    private Set<BlogCommentMasterResponseBean> blogCommentMasterResponseBeanSet;
     @JsonProperty(value = "added_on")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = BlogStackCommonConstants.DATE_FORMAT)
     private LocalDateTime addedOn;
