@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BlogsResponseBean {
+public class BlogMasterResponseBean {
     @JsonProperty(value = "blog_id")
     private String blogId;
     @JsonProperty(value = "blog_name")

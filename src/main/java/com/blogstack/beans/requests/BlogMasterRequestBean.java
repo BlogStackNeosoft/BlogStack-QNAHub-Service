@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BlogsRequestBean{
+public class BlogMasterRequestBean {
     @JsonProperty(value = "blog_id")
     private String blogId;
     @JsonProperty(value = "blog_name")

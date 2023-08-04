@@ -26,7 +26,6 @@ public interface IBlogStackAnswerMasterEntityPojoMapper {
                 answerMasterResponseBeanBuilder.answerId(blogStackAnswerMaster.getBsamAnswerId())
                         .answer(blogStackAnswerMaster.getBsamAnswer())
                         .status(blogStackAnswerMaster.getBsamStatus())
-                        //.comments(IBlogStackCommentMasterEntityPojoMapper.mapCommentMasterEntityListToPojoListMapping.apply(blogStackAnswerMaster.getBlogStackCommentMastersList()))
                         .comments(blogStackAnswerMaster.getBlogStackCommentMastersList()==null? new ArrayList<CommentMasterResponseBean>() : IBlogStackCommentMasterEntityPojoMapper.mapCommentMasterEntityListToPojoListMapping.apply(blogStackAnswerMaster.getBlogStackCommentMastersList()))
                         .addedOn(blogStackAnswerMaster.getBsamCreatedDate());
                 return answerMasterResponseBeanBuilder.build();

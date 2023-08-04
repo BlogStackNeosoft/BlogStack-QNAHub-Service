@@ -6,13 +6,9 @@ import com.blogstack.beans.responses.ServiceResponseBean;
 import com.blogstack.commons.BlogStackMessageConstants;
 import com.blogstack.entities.BlogStackAnswerMaster;
 import com.blogstack.entities.BlogStackCommentMaster;
-import com.blogstack.entities.BlogStackQuestionMaster;
-import com.blogstack.entity.pojo.mapper.IBlogStackAnswerMasterEntityPojoMapper;
 import com.blogstack.entity.pojo.mapper.IBlogStackCommentMasterEntityPojoMapper;
-import com.blogstack.enums.CommentMasterStatusEnum;
 import com.blogstack.enums.UuidPrefixEnum;
-import com.blogstack.exceptions.BlogstackDataNotFoundException;
-import com.blogstack.pojo.entity.mapper.IBlogStackAnswerMasterPojoEntityMapper;
+import com.blogstack.exceptions.BlogStackDataNotFoundException;
 import com.blogstack.pojo.entity.mapper.IBlogStackCommentMasterPojoEntityMapper;
 import com.blogstack.repository.IBlogStackAnswerMasterRepository;
 import com.blogstack.repository.IBlogStackCommentMasterRepository;
@@ -30,7 +26,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BlogStackCommentMasterService implements IBlogStackCommentMasterService {
@@ -56,20 +51,18 @@ public class BlogStackCommentMasterService implements IBlogStackCommentMasterSer
 
         commentMasterRequestBean.setCommentId(commentId);
         commentMasterRequestBean.setCreatedBy(springApplicationName);
-
+        BlogStackCommentMaster blogStackCommentMaster = IBlogStackCommentMasterPojoEntityMapper.INSTANCE.commentMasterRequestToCommentMasterEntity(commentMasterRequestBean);
         Optional<BlogStackAnswerMaster> blogStackAnswerMasterOptional = this.blogStackAnswerMasterRepository.findByBsamAnswerId(answerId);
         LOGGER.warn("BlogStackAnswerMasterOptional :: {}", blogStackAnswerMasterOptional);
 
         if (blogStackAnswerMasterOptional.isEmpty())
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
-        Optional<BlogStackAnswerMaster> blogStackAnswersCommentMasterOptional = blogStackAnswerMasterOptional.map(answer -> {
-            answer.getBlogStackCommentMastersList().add(IBlogStackCommentMasterPojoEntityMapper.INSTANCE.commentMasterRequestToCommentMasterEntity(commentMasterRequestBean));
-            return this.blogStackAnswerMasterRepository.saveAndFlush(answer);
-        });
-        return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityPojoMapping.apply(blogStackAnswersCommentMasterOptional.get())).build());
+        blogStackAnswerMasterOptional.get().getBlogStackCommentMastersList().add(blogStackCommentMaster);
+        this.blogStackAnswerMasterRepository.saveAndFlush(blogStackAnswerMasterOptional.get());
+
+        return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(IBlogStackCommentMasterEntityPojoMapper.mapCommentMasterEntityPojoMapping.apply(blogStackCommentMaster)).build());
     }
-
 
     @Override
     public Optional<ServiceResponseBean> fetchAllComment(Integer page, Integer size) {
@@ -77,7 +70,7 @@ public class BlogStackCommentMasterService implements IBlogStackCommentMasterSer
         LOGGER.warn("BlogStackCommentMaster :: {}", blogStackCommentMasterPage);
 
         if (CollectionUtils.isEmpty(blogStackCommentMasterPage.toList()))
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
         return  Optional.of(ServiceResponseBean.builder()
                 .status(Boolean.TRUE).data(PageResponseBean.builder().payload(IBlogStackCommentMasterEntityPojoMapper.mapCommentMasterEntityListToPojoListMapping.apply(blogStackCommentMasterPage.toList()))
@@ -95,7 +88,7 @@ public class BlogStackCommentMasterService implements IBlogStackCommentMasterSer
         LOGGER.warn("BlogStackAnswerMasterOptional :: {}", blogStackAnswerMasterOptional);
 
         if (blogStackAnswerMasterOptional.isEmpty())
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
         List<BlogStackCommentMaster> blogStackCommentMasterList = new ArrayList<>(blogStackAnswerMasterOptional.get().getBlogStackCommentMastersList());
         LOGGER.warn("BlogStackCommentMasterList :: {}", blogStackCommentMasterList);
@@ -109,7 +102,7 @@ public class BlogStackCommentMasterService implements IBlogStackCommentMasterSer
         LOGGER.info("BlogStackQuestionMasterOptional :: {}", blogStackCommentMasterOptional);
 
         if (blogStackCommentMasterOptional.isEmpty())
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
         return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(IBlogStackCommentMasterEntityPojoMapper.mapCommentMasterEntityPojoMapping.apply(blogStackCommentMasterOptional.get())).build());
     }
@@ -120,7 +113,7 @@ public class BlogStackCommentMasterService implements IBlogStackCommentMasterSer
         LOGGER.warn("BlogStackQuestionMasterOptional :: {}", blogStackCommenMasterOptional);
 
         if (blogStackCommenMasterOptional.isEmpty())
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
         commentMasterRequestBean.setModifiedBy(this.springApplicationName);
         BlogStackCommentMaster blogStackQuestionMaster = this.blogStackQuestionMasterPojoEntityMapper.INSTANCE.updateCommentMaster.apply(commentMasterRequestBean, blogStackCommenMasterOptional.get());
@@ -136,7 +129,7 @@ public class BlogStackCommentMasterService implements IBlogStackCommentMasterSer
         LOGGER.info("blogStackCommentMasterOptional :: {}", blogStackCommentMasterOptional);
 
         if (blogStackCommentMasterOptional.isEmpty())
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
         this.blogStackCommentMasterRepository.delete(blogStackCommentMasterOptional.get());
         return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).message(BlogStackMessageConstants.INSTANCE.DATA_DELETED).build());
@@ -148,7 +141,7 @@ public class BlogStackCommentMasterService implements IBlogStackCommentMasterSer
         LOGGER.warn("BlogStackAnswerMasterOptional :: {}", blogStackAnswerMasterOptional);
 
         if (blogStackAnswerMasterOptional.isEmpty())
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
         blogStackAnswerMasterOptional.get().getBlogStackCommentMastersList().clear();
         this.blogStackAnswerMasterRepository.saveAndFlush(blogStackAnswerMasterOptional.get());

@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 public interface IBlogStackQuestionMasterEntityPojoMapper {
     public static Function<BlogStackQuestionMaster, QuestionMasterResponseBean> mapQuestionMasterEntityPojoMapping = blogStackQuestionMaster -> QuestionMasterResponseBean.builder()
             .questionId(blogStackQuestionMaster.getBsqmQuestionId())
-            .question(blogStackQuestionMaster.getBsqmQuestion())
+            .title(blogStackQuestionMaster.getBsqmTitle())
+            .content(blogStackQuestionMaster.getBsqmContent())
             .userId(blogStackQuestionMaster.getBsqmUserId())
             .tagId(blogStackQuestionMaster.getBsqmTagId())
             .codeSnippet(blogStackQuestionMaster.getBsqmCodeSnippet())
             .categoryId(blogStackQuestionMaster.getBsqmCategoryId())
             .subCategoryId(blogStackQuestionMaster.getBsqmSubCategoryId())
-            //.blogStackAnswers((Set<AnswerMasterResponseBean>) IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackQuestionMaster.getBlogStackAnswerMasterList()))
-            .blogStackAnswers(blogStackQuestionMaster.getBlogStackAnswerMasterList()==null? new HashSet<AnswerMasterResponseBean>() : (Set<AnswerMasterResponseBean>) IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackQuestionMaster.getBlogStackAnswerMasterList()))
+            .blogStackAnswers(blogStackQuestionMaster.getBlogStackAnswerMasterList() == null ? new HashSet<AnswerMasterResponseBean>() : IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackQuestionMaster.getBlogStackAnswerMasterList()))
             .status(blogStackQuestionMaster.getBsqmStatus())
             .addedOn(blogStackQuestionMaster.getBsqmCreatedDate())
             .build();
@@ -29,13 +29,14 @@ public interface IBlogStackQuestionMasterEntityPojoMapper {
             .map(blogStackQuestionMaster -> {
                 QuestionMasterResponseBean.QuestionMasterResponseBeanBuilder questionMasterResponseBeanBuilder = QuestionMasterResponseBean.builder();
                 questionMasterResponseBeanBuilder.questionId(blogStackQuestionMaster.getBsqmQuestionId())
-                        .question(blogStackQuestionMaster.getBsqmQuestion())
+                        .title(blogStackQuestionMaster.getBsqmTitle())
+                        .content(blogStackQuestionMaster.getBsqmContent())
                         .userId(blogStackQuestionMaster.getBsqmUserId())
                         .tagId(blogStackQuestionMaster.getBsqmTagId())
                         .codeSnippet(blogStackQuestionMaster.getBsqmCodeSnippet())
                         .categoryId(blogStackQuestionMaster.getBsqmCategoryId())
                         .subCategoryId(blogStackQuestionMaster.getBsqmSubCategoryId())
-                        .blogStackAnswers((Set<AnswerMasterResponseBean>) IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackQuestionMaster.getBlogStackAnswerMasterList()))
+                        .blogStackAnswers(blogStackQuestionMaster.getBlogStackAnswerMasterList() == null ? new HashSet<AnswerMasterResponseBean>() : IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackQuestionMaster.getBlogStackAnswerMasterList()))
                         .status(blogStackQuestionMaster.getBsqmStatus())
                         .addedOn(blogStackQuestionMaster.getBsqmCreatedDate());
                 return questionMasterResponseBeanBuilder.build();

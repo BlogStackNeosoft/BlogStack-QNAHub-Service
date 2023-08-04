@@ -15,7 +15,10 @@ public enum UuidPrefixEnum {
 
     SUBCATEGORY_ID("SUBCATEGORY_ID_"),
 
+    BLOG_ID("BLOG_ID"),
+
     COMMENT_ID("COMMENT_ID_");
+
 
     @Getter
     private String value;

@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface IBlogStackQuestionMasterRepository extends JpaRepository<BlogStackQuestionMaster, Long> {
 
-    Optional<BlogStackQuestionMaster> findByBsqmQuestionIgnoreCase(String question);
+    Optional<BlogStackQuestionMaster> findByBsqmTitleIgnoreCase(String question);
 
     Optional<BlogStackQuestionMaster> findByBsqmQuestionId(String questionId);
 }
