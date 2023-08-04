@@ -7,10 +7,9 @@ import com.blogstack.commons.BlogStackMessageConstants;
 import com.blogstack.entities.BlogStackAnswerMaster;
 import com.blogstack.entities.BlogStackQuestionMaster;
 import com.blogstack.entity.pojo.mapper.IBlogStackAnswerMasterEntityPojoMapper;
-import com.blogstack.entity.pojo.mapper.IBlogStackQuestionMasterEntityPojoMapper;
 import com.blogstack.enums.UuidPrefixEnum;
 import com.blogstack.exceptions.BlogStackCustomException;
-import com.blogstack.exceptions.BlogstackDataNotFoundException;
+import com.blogstack.exceptions.BlogStackDataNotFoundException;
 import com.blogstack.pojo.entity.mapper.IBlogStackAnswerMasterPojoEntityMapper;
 import com.blogstack.repository.IBlogStackAnswerMasterRepository;
 import com.blogstack.repository.IBlogStackQuestionMasterRepository;
@@ -26,7 +25,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -56,17 +57,17 @@ public class BlogStackAnswerMasterService implements IBlogStackAnswerMasterServi
 
         answerMasterRequestBean.setAnswerId(answerId);
         answerMasterRequestBean.setCreatedBy(this.springApplicationName);
+        BlogStackAnswerMaster blogStackAnswerMaster = IBlogStackAnswerMasterPojoEntityMapper.INSTANCE.answerMasterRequestToAnswerMasterEntity(answerMasterRequestBean);
         Optional<BlogStackQuestionMaster> blogStackQuestionMasterOptional = this.blogStackQuestionMasterRepository.findByBsqmQuestionId(questionId);
         LOGGER.warn("BlogStackQuestionMasterOptional :: {}", blogStackQuestionMasterOptional);
 
         if (blogStackQuestionMasterOptional.isEmpty())
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
-        Optional<BlogStackQuestionMaster> blogStackQuestionsAnswerMasterOptional = blogStackQuestionMasterOptional.map(question -> {
-            question.getBlogStackAnswerMasterList().add(IBlogStackAnswerMasterPojoEntityMapper.INSTANCE.answerMasterRequestToAnswerMasterEntity(answerMasterRequestBean));
-            return this.blogStackQuestionMasterRepository.saveAndFlush(question);
-        });
-        return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(IBlogStackQuestionMasterEntityPojoMapper.mapQuestionMasterEntityPojoMapping.apply(blogStackQuestionsAnswerMasterOptional.get())).build());
+        blogStackQuestionMasterOptional.get().getBlogStackAnswerMasterList().add(blogStackAnswerMaster);
+        this.blogStackQuestionMasterRepository.saveAndFlush(blogStackQuestionMasterOptional.get());
+
+        return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityPojoMapping.apply(blogStackAnswerMaster)).build());
     }
 
     @Override
@@ -75,7 +76,7 @@ public class BlogStackAnswerMasterService implements IBlogStackAnswerMasterServi
         LOGGER.debug("BlogStackAnswerMasterPage :: {}", blogStackAnswerMasterPage);
 
         if(CollectionUtils.isEmpty(blogStackAnswerMasterPage.toList()))
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
         return Optional.of(ServiceResponseBean.builder()
                 .status(Boolean.TRUE).data(PageResponseBean.builder().payload(IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackAnswerMasterPage.toSet()))
@@ -93,7 +94,7 @@ public class BlogStackAnswerMasterService implements IBlogStackAnswerMasterServi
         LOGGER.warn("BlogStackQuestionMasterOptional :: {}", blogStackQuestionMasterOptional);
 
         if (blogStackQuestionMasterOptional.isEmpty())
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
         Set<BlogStackAnswerMaster> blogStackAnswerMasterList = new HashSet<>(blogStackQuestionMasterOptional.get().getBlogStackAnswerMasterList());
         LOGGER.warn("BlogStackAnswerMasterList :: {}", blogStackAnswerMasterList);
@@ -107,7 +108,7 @@ public class BlogStackAnswerMasterService implements IBlogStackAnswerMasterServi
         LOGGER.warn("BlogStackAnswerMasterOptional :: {}", blogStackAnswerMasterOptional);
 
         if(blogStackAnswerMasterOptional.isEmpty())
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
         return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityPojoMapping.apply(blogStackAnswerMasterOptional.get())).build());
     }
@@ -118,7 +119,7 @@ public class BlogStackAnswerMasterService implements IBlogStackAnswerMasterServi
         LOGGER.debug("BlogStackAnswerMasterOptional :: {}", blogStackAnswerMasterOptional);
 
         if (blogStackAnswerMasterOptional.isEmpty())
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
         answerMasterRequestBean.setModifiedBy(this.springApplicationName);
         BlogStackAnswerMaster blogStackAnswerMaster = IBlogStackAnswerMasterPojoEntityMapper.updateAnswerMaster.apply(answerMasterRequestBean, blogStackAnswerMasterOptional.get());
@@ -134,7 +135,7 @@ public class BlogStackAnswerMasterService implements IBlogStackAnswerMasterServi
         LOGGER.warn("BlogStackAnswerMasterOptional :: {}", blogStackAnswerMasterOptional);
 
         if(blogStackAnswerMasterOptional.isEmpty())
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
         this.blogStackAnswerMasterRepository.delete(blogStackAnswerMasterOptional.get());
         return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).message(BlogStackMessageConstants.INSTANCE.DATA_DELETED).build());
@@ -146,7 +147,7 @@ public class BlogStackAnswerMasterService implements IBlogStackAnswerMasterServi
         LOGGER.warn("BlogStackQuestionMasterOptional :: {}", blogStackQuestionMasterOptional);
 
         if (blogStackQuestionMasterOptional.isEmpty())
-            throw new BlogstackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
         blogStackQuestionMasterOptional.get().getBlogStackAnswerMasterList().clear();
         this.blogStackQuestionMasterRepository.saveAndFlush(blogStackQuestionMasterOptional.get());

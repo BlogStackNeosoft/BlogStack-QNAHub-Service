@@ -15,21 +15,24 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommentMasterRequestBean {
+
     @JsonProperty(value="comment_id")
     private  String commentId;
+
     @NotNull(message="Comment cannot be empty")
     private  String comment;
 
     private  String status;
+
     @JsonProperty(value = "upvote")
     private Long upvote;
+
     @JsonProperty(value = "downvote")
     private Long downvote;
+
     @JsonIgnore
     private String createdBy;
+
     @JsonIgnore
     private String modifiedBy;
-
-
-
 }

@@ -4,10 +4,8 @@ import com.blogstack.beans.requests.BlogMasterRequestBean;
 import com.blogstack.beans.responses.ServiceResponseBean;
 import com.blogstack.entities.BlogStackBlogsMaster;
 import com.blogstack.entity.pojo.mapper.IBlogStackBlogMasterEntityPojoMapper;
-import com.blogstack.entity.pojo.mapper.IBlogStackQuestionMasterEntityPojoMapper;
 import com.blogstack.enums.UuidPrefixEnum;
 import com.blogstack.pojo.entity.mapper.IBlogStackBlogMasterPojoEntityMapper;
-import com.blogstack.pojo.entity.mapper.IBlogStackQuestionMasterPojoEntityMapper;
 import com.blogstack.repository.IBlogStackBlogsMasterRepository;
 import com.blogstack.service.IBlogStackBlogsService;
 import com.blogstack.utils.BlogStackCommonUtils;
@@ -22,12 +20,13 @@ import java.util.Optional;
 
 @Service
 public class BlogStackBlogsServiceImpl implements IBlogStackBlogsService {
+    private static Logger LOGGER = LoggerFactory.getLogger(BlogStackBlogsServiceImpl.class);
 
-   @Autowired
-   private IBlogStackBlogsMasterRepository blogStackBlogsMasterRepository;
+    @Autowired
+    private IBlogStackBlogsMasterRepository blogStackBlogsMasterRepository;
+
     @Value("#{'${spring.application.name}'.toUpperCase()}")
     private String springApplicationName;
-   private static Logger LOGGER = LoggerFactory.getLogger(BlogStackBlogsServiceImpl.class);
 
 
     @Override

@@ -13,8 +13,6 @@ public enum UuidPrefixEnum {
 
     QUESTION_ID("QUESTION_ID_"),
 
-    CATEGORY_ID("CATEGORY_ID_"),
-
     SUBCATEGORY_ID("SUBCATEGORY_ID_"),
 
     BLOG_ID("BLOG_ID"),

@@ -20,8 +20,7 @@ public interface IBlogStackQuestionMasterEntityPojoMapper {
             .codeSnippet(blogStackQuestionMaster.getBsqmCodeSnippet())
             .categoryId(blogStackQuestionMaster.getBsqmCategoryId())
             .subCategoryId(blogStackQuestionMaster.getBsqmSubCategoryId())
-            //.blogStackAnswers((Set<AnswerMasterResponseBean>) IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackQuestionMaster.getBlogStackAnswerMasterList()))
-            .blogStackAnswers(blogStackQuestionMaster.getBlogStackAnswerMasterList()==null? new HashSet<AnswerMasterResponseBean>() : (Set<AnswerMasterResponseBean>) IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackQuestionMaster.getBlogStackAnswerMasterList()))
+            .blogStackAnswers(blogStackQuestionMaster.getBlogStackAnswerMasterList() == null ? new HashSet<AnswerMasterResponseBean>() : IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackQuestionMaster.getBlogStackAnswerMasterList()))
             .status(blogStackQuestionMaster.getBsqmStatus())
             .addedOn(blogStackQuestionMaster.getBsqmCreatedDate())
             .build();
@@ -37,7 +36,7 @@ public interface IBlogStackQuestionMasterEntityPojoMapper {
                         .codeSnippet(blogStackQuestionMaster.getBsqmCodeSnippet())
                         .categoryId(blogStackQuestionMaster.getBsqmCategoryId())
                         .subCategoryId(blogStackQuestionMaster.getBsqmSubCategoryId())
-                        .blogStackAnswers((Set<AnswerMasterResponseBean>) IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackQuestionMaster.getBlogStackAnswerMasterList()))
+                        .blogStackAnswers(blogStackQuestionMaster.getBlogStackAnswerMasterList() == null ? new HashSet<AnswerMasterResponseBean>() : IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackQuestionMaster.getBlogStackAnswerMasterList()))
                         .status(blogStackQuestionMaster.getBsqmStatus())
                         .addedOn(blogStackQuestionMaster.getBsqmCreatedDate());
                 return questionMasterResponseBeanBuilder.build();
