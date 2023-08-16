@@ -1,6 +1,7 @@
 package com.blogstack.controller;
 
 import com.blogstack.beans.requests.QuestionMasterRequestBean;
+import com.blogstack.beans.responses.ServiceResponseBean;
 import com.blogstack.service.IBlogStackQuestionMasterService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +9,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @Validated
@@ -42,5 +46,15 @@ public class BlogStackQuestionMasterController {
     @DeleteMapping("/{question_id}")
     public ResponseEntity<?> deleteQuestion(@PathVariable(value = "question_id") @NotBlank(message = "Question Id can not be empty.") String questionId){
         return ResponseEntity.ok(this.blogStackQuestionMasterService.deleteQuestion(questionId));
+    }
+
+    @GetMapping("/all-questions")
+    public ResponseEntity<?> fetchAllQuestionsBySetIds(@RequestParam("ids") Set<String> ids){
+        return ResponseEntity.ok(this.blogStackQuestionMasterService.fetchAllQuestionsByQuestionIds(ids));
+    }
+
+    @GetMapping("/all-questions/{user_id}")
+    public ResponseEntity<?> fetchAllQuestionsByUserId(@PathVariable(value = "user_id") @NotBlank(message = "user id can not be blank") String userId){
+        return ResponseEntity.ok(this.blogStackQuestionMasterService.fetchAllQuestionsByUserId(userId));
     }
 }

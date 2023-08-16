@@ -1,10 +1,12 @@
 package com.blogstack.service;
 
+import com.blogstack.beans.requests.QuestionIdRequestBean;
 import com.blogstack.beans.requests.QuestionMasterRequestBean;
 import com.blogstack.beans.responses.ServiceResponseBean;
 
 
 import java.util.Optional;
+import java.util.Set;
 
 public interface IBlogStackQuestionMasterService {
 
@@ -17,4 +19,8 @@ public interface IBlogStackQuestionMasterService {
     Optional<ServiceResponseBean> updateQuestion(QuestionMasterRequestBean questionMasterRequestBean);
 
     Optional<ServiceResponseBean> deleteQuestion(String questionId);
+
+    Optional<ServiceResponseBean> fetchAllQuestionsByQuestionIds(Set<String> ids);
+
+    Optional<ServiceResponseBean> fetchAllQuestionsByUserId(String userId);
 }
