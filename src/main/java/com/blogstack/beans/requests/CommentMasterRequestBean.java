@@ -25,10 +25,10 @@ public class CommentMasterRequestBean {
     private  String status;
 
     @JsonProperty(value = "upvote")
-    private Long upvote;
+    private Integer upvote;
 
     @JsonProperty(value = "downvote")
-    private Long downvote;
+    private Integer downvote;
 
     @JsonIgnore
     private String createdBy;

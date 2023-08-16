@@ -5,7 +5,6 @@ import com.blogstack.beans.responses.CommentMasterResponseBean;
 import com.blogstack.entities.BlogStackAnswerMaster;
 
 
-
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.function.Function;
@@ -16,7 +15,9 @@ public interface IBlogStackAnswerMasterEntityPojoMapper {
             .answerId(blogStackAnswerMaster.getBsamAnswerId())
             .answer(blogStackAnswerMaster.getBsamAnswer())
             .status(blogStackAnswerMaster.getBsamStatus())
-            .comments(IBlogStackCommentMasterEntityPojoMapper.mapCommentMasterEntityListToPojoListMapping.apply(blogStackAnswerMaster.getBlogStackCommentMastersList()))
+            .upvote(blogStackAnswerMaster.getBsamUpvote())
+            .downvote(blogStackAnswerMaster.getBsamDownvote())
+            .comments(blogStackAnswerMaster.getBlogStackCommentMastersList() == null ? new ArrayList<CommentMasterResponseBean>() : IBlogStackCommentMasterEntityPojoMapper.mapCommentMasterEntityListToPojoListMapping.apply(blogStackAnswerMaster.getBlogStackCommentMastersList()))
             .addedOn(blogStackAnswerMaster.getBsamCreatedDate())
             .build();
 
@@ -26,7 +27,9 @@ public interface IBlogStackAnswerMasterEntityPojoMapper {
                 answerMasterResponseBeanBuilder.answerId(blogStackAnswerMaster.getBsamAnswerId())
                         .answer(blogStackAnswerMaster.getBsamAnswer())
                         .status(blogStackAnswerMaster.getBsamStatus())
-                        .comments(blogStackAnswerMaster.getBlogStackCommentMastersList()==null? new ArrayList<CommentMasterResponseBean>() : IBlogStackCommentMasterEntityPojoMapper.mapCommentMasterEntityListToPojoListMapping.apply(blogStackAnswerMaster.getBlogStackCommentMastersList()))
+                        .upvote(blogStackAnswerMaster.getBsamUpvote())
+                        .downvote(blogStackAnswerMaster.getBsamDownvote())
+                        .comments(blogStackAnswerMaster.getBlogStackCommentMastersList() == null ? new ArrayList<CommentMasterResponseBean>() : IBlogStackCommentMasterEntityPojoMapper.mapCommentMasterEntityListToPojoListMapping.apply(blogStackAnswerMaster.getBlogStackCommentMastersList()))
                         .addedOn(blogStackAnswerMaster.getBsamCreatedDate());
                 return answerMasterResponseBeanBuilder.build();
             }).collect(Collectors.toSet());

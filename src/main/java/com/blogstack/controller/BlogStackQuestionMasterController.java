@@ -1,7 +1,6 @@
 package com.blogstack.controller;
 
 import com.blogstack.beans.requests.QuestionMasterRequestBean;
-import com.blogstack.beans.responses.ServiceResponseBean;
 import com.blogstack.service.IBlogStackQuestionMasterService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.Set;
 
 @RestController

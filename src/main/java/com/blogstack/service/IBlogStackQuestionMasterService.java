@@ -1,6 +1,5 @@
 package com.blogstack.service;
 
-import com.blogstack.beans.requests.QuestionIdRequestBean;
 import com.blogstack.beans.requests.QuestionMasterRequestBean;
 import com.blogstack.beans.responses.ServiceResponseBean;
 

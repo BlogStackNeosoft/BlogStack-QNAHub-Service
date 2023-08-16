@@ -1,6 +1,7 @@
 package com.blogstack.controller;
 
 import com.blogstack.beans.requests.AnswerMasterRequestBean;
+import com.blogstack.beans.responses.ServiceResponseBean;
 import com.blogstack.commons.BlogStackMessageConstants;
 import com.blogstack.service.IBlogStackAnswerMasterService;
 import jakarta.validation.Valid;
@@ -9,6 +10,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @Validated
@@ -52,5 +55,10 @@ public class BlogStackAnswerMasterController {
     @DeleteMapping("/question/{questionId}")
     public ResponseEntity<?> deleteAllAnswerByQuestionId(@PathVariable(value = "questionId") @NotBlank(message = "Answer Id can not be empty.") String questionId){
         return ResponseEntity.ok(this.blogStackAnswerMasterService.deleteAllAnswerByQuestionId(questionId));
+    }
+
+    @GetMapping("/all-answers/{userId}")
+    public ResponseEntity<?> fetchAllAnswersByUserId(@PathVariable(value = "userId") @NotBlank(message = "Email Id can not be empty.") String userId){
+        return ResponseEntity.ok(this.blogStackAnswerMasterService.fetchAllAnswersByUserId(userId));
     }
 }

@@ -38,6 +38,12 @@ public class BlogStackAnswerMaster implements Serializable {
     @Column(name = "bsam_user_id")
     private String bsamUserId;
 
+    @Column(name = "bsam_upvote")
+    private Integer bsamUpvote;
+
+    @Column(name = "bsam_downvote")
+    private Integer bsamDownvote;
+
     @Column(name = "bsam_status")
     private String bsamStatus;
 

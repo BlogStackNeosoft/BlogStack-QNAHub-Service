@@ -7,6 +7,7 @@ import com.blogstack.commons.BlogStackMessageConstants;
 import com.blogstack.entities.BlogStackAnswerMaster;
 import com.blogstack.entities.BlogStackQuestionMaster;
 import com.blogstack.entity.pojo.mapper.IBlogStackAnswerMasterEntityPojoMapper;
+import com.blogstack.entity.pojo.mapper.IBlogStackQuestionMasterEntityPojoMapper;
 import com.blogstack.enums.UuidPrefixEnum;
 import com.blogstack.exceptions.BlogStackCustomException;
 import com.blogstack.exceptions.BlogStackDataNotFoundException;
@@ -26,8 +27,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -152,5 +155,16 @@ public class BlogStackAnswerMasterService implements IBlogStackAnswerMasterServi
         blogStackQuestionMasterOptional.get().getBlogStackAnswerMasterList().clear();
         this.blogStackQuestionMasterRepository.saveAndFlush(blogStackQuestionMasterOptional.get());
         return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).message(BlogStackMessageConstants.INSTANCE.DATA_DELETED).build());
+    }
+
+    @Override
+    public Optional<ServiceResponseBean> fetchAllAnswersByUserId(String userId){
+        Optional<Set<BlogStackAnswerMaster>> blogStackAnswerMasterOptionalSet = this.blogStackAnswerMasterRepository.findAllByBsamUserId(userId);
+        LOGGER.warn("BlogStackAnswerMasterOptionalList :: {}", blogStackAnswerMasterOptionalSet);
+
+        if (blogStackAnswerMasterOptionalSet.isPresent() && blogStackAnswerMasterOptionalSet.get().isEmpty())
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+
+        return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(IBlogStackAnswerMasterEntityPojoMapper.mapAnswerMasterEntityListToPojoListMapping.apply(blogStackAnswerMasterOptionalSet.get())).build());
     }
 }

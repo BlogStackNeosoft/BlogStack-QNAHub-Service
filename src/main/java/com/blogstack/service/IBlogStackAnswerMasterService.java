@@ -19,4 +19,6 @@ public interface IBlogStackAnswerMasterService {
     Optional<ServiceResponseBean> deleteAnswer(String answerId);
 
     Optional<ServiceResponseBean> deleteAllAnswerByQuestionId(String questionId);
+
+    Optional<ServiceResponseBean> fetchAllAnswersByUserId(String userId);
 }

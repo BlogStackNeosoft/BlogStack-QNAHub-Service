@@ -35,10 +35,10 @@ public class BlogStackCommentMaster implements Serializable {
     private String bscmComment;
 
     @Column(name = "bscm_upvote")
-    private Long bscmUpvote;
+    private Integer bscmUpvote;
 
     @Column(name = "bscm_downvote")
-    private Long bscmDownvote;
+    private Integer bscmDownvote;
 
     @Column(name = "bscm_status")
     private String bscmStatus;

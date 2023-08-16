@@ -19,6 +19,9 @@ public interface IBlogStackAnswerMasterPojoEntityMapper {
     @Mappings({
             @Mapping(target = "bsamAnswerId", source = "answerMasterRequestBean.answerId"),
             @Mapping(target = "bsamAnswer", source = "answerMasterRequestBean.answer"),
+            @Mapping(target = "bsamUserId", source = "answerMasterRequestBean.userId"),
+            @Mapping(target = "bsamUpvote", source = "answerMasterRequestBean.upvote"),
+            @Mapping(target = "bsamDownvote", source = "answerMasterRequestBean.downvote"),
             @Mapping(target = "bsamStatus", expression = "java(AnswerMasterStatusEnum.ACTIVE.getValue())"),
             @Mapping(target = "bsamCreatedBy", source = "answerMasterRequestBean.createdBy"),
             @Mapping(target = "bsamCreatedDate", expression = "java(LocalDateTime.now())")
@@ -28,6 +31,9 @@ public interface IBlogStackAnswerMasterPojoEntityMapper {
     public static BiFunction<AnswerMasterRequestBean, BlogStackAnswerMaster, BlogStackAnswerMaster> updateAnswerMaster = (answerMasterRequestBean, blogStackAnswerMaster) -> {
         blogStackAnswerMaster.setBsamAnswerId(answerMasterRequestBean.getAnswerId() != null ? answerMasterRequestBean.getAnswerId() : blogStackAnswerMaster.getBsamAnswerId());
         blogStackAnswerMaster.setBsamAnswer(answerMasterRequestBean.getAnswerId() != null ? answerMasterRequestBean.getAnswer() : blogStackAnswerMaster.getBsamAnswer());
+        blogStackAnswerMaster.setBsamUserId(answerMasterRequestBean.getUserId() != null ? answerMasterRequestBean.getUserId() : blogStackAnswerMaster.getBsamUserId());
+        blogStackAnswerMaster.setBsamUpvote(answerMasterRequestBean.getUpvote() != null ? answerMasterRequestBean.getUpvote() : blogStackAnswerMaster.getBsamUpvote());
+        blogStackAnswerMaster.setBsamDownvote(answerMasterRequestBean.getDownvote() != null ? answerMasterRequestBean.getDownvote() : blogStackAnswerMaster.getBsamDownvote());
         blogStackAnswerMaster.setBsamStatus(answerMasterRequestBean.getStatus() != null ? answerMasterRequestBean.getStatus() : blogStackAnswerMaster.getBsamStatus());
         blogStackAnswerMaster.setBsamModifiedBy(answerMasterRequestBean.getModifiedBy());
         blogStackAnswerMaster.setBsamModifiedDate(LocalDateTime.now());

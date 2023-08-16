@@ -26,11 +26,12 @@ public class CommentMasterResponseBean {
     private  String comment;
 
     private  String status;
+
     @JsonProperty(value = "upvote")
-    private Long upvote;
+    private Integer upvote;
 
     @JsonProperty(value = "downvote")
-    private Long downvote;
+    private Integer downvote;
 
     @JsonProperty(value = "added_on")
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = BlogStackCommonConstants.DATE_FORMAT)

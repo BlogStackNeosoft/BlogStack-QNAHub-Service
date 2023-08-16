@@ -21,6 +21,15 @@ public class AnswerMasterRequestBean {
     @NotNull(message = "Answer can not be empty.")
     private String answer;
 
+    @JsonProperty(value = "user_id")
+    private String userId;
+
+    @JsonProperty(value = "upvote")
+    private Integer upvote;
+
+    @JsonProperty(value = "downvote")
+    private Integer downvote;
+
     private String status;
 
     @JsonIgnore
