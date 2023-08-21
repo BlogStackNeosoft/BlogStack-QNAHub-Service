@@ -6,7 +6,9 @@ import com.blogstack.beans.responses.ServiceResponseBean;
 import com.blogstack.commons.BlogStackMessageConstants;
 import com.blogstack.entities.BlogStackAnswerMaster;
 import com.blogstack.entities.BlogStackCommentMaster;
+import com.blogstack.entities.BlogStackQuestionMaster;
 import com.blogstack.entity.pojo.mapper.IBlogStackCommentMasterEntityPojoMapper;
+import com.blogstack.entity.pojo.mapper.IBlogStackQuestionMasterEntityPojoMapper;
 import com.blogstack.enums.UuidPrefixEnum;
 import com.blogstack.exceptions.BlogStackDataNotFoundException;
 import com.blogstack.pojo.entity.mapper.IBlogStackCommentMasterPojoEntityMapper;
@@ -146,5 +148,16 @@ public class BlogStackCommentMasterService implements IBlogStackCommentMasterSer
         blogStackAnswerMasterOptional.get().getBlogStackCommentMastersList().clear();
         this.blogStackAnswerMasterRepository.saveAndFlush(blogStackAnswerMasterOptional.get());
         return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).message(BlogStackMessageConstants.INSTANCE.DATA_DELETED).build());
+    }
+
+    @Override
+    public Optional<ServiceResponseBean> fetchAllCommentByUserId(String userId){
+        Optional<List<BlogStackCommentMaster>> blogStackCommentMasterOptionalList = this.blogStackCommentMasterRepository.findAllByBscmUserId(userId);
+        LOGGER.warn("BlogStackCommentMasterOptionalList :: {}", blogStackCommentMasterOptionalList);
+
+        if (blogStackCommentMasterOptionalList.isPresent() && blogStackCommentMasterOptionalList.get().isEmpty())
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+
+        return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(IBlogStackCommentMasterEntityPojoMapper.mapCommentMasterEntityListToPojoListMapping.apply(blogStackCommentMasterOptionalList.get())).build());
     }
 }

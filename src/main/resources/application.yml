@@ -7,7 +7,7 @@ spring:
 
   datasource:
     url: jdbc:postgresql://ec2-52-66-208-5.ap-south-1.compute.amazonaws.com:5432/blogstackmaster
- #   url: jdbc:postgresql://localhost:5432/BlogStackMaster
+#    url: jdbc:postgresql://localhost:5432/BlogStackMaster
     username: postgres
     password: root
 

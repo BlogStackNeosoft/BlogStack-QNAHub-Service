@@ -19,4 +19,6 @@ public interface IBlogStackCommentMasterService {
     Optional<ServiceResponseBean> deleteComment(String commentId);
 
     Optional<ServiceResponseBean> deleteAllCommentByAnswerId(String answerId);
+
+    Optional<ServiceResponseBean> fetchAllCommentByUserId(String userId);
 }

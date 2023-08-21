@@ -55,4 +55,9 @@ public class BlogStackCommentMasterController {
     public ResponseEntity<?> deleteAllCommentByAnswerId(@PathVariable(value = "answerId") String answerId) {
         return ResponseEntity.ok(this.blogStackCommentMasterService.deleteAllCommentByAnswerId(answerId));
     }
+
+    @GetMapping("/all-comment/{user_id}")
+    public ResponseEntity<?> fetchAllCommentByUserId(@PathVariable(value = "user_id") @NotBlank(message = "user id can not be blank") String userId){
+        return ResponseEntity.ok(this.blogStackCommentMasterService.fetchAllCommentByUserId(userId));
+    }
 }

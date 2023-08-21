@@ -40,6 +40,9 @@ public class BlogStackCommentMaster implements Serializable {
     @Column(name = "bscm_downvote")
     private Integer bscmDownvote;
 
+    @Column(name = "bscm_user_id")
+    private String bscmUserId;
+
     @Column(name = "bscm_status")
     private String bscmStatus;
 
