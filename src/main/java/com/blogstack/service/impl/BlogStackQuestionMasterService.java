@@ -2,6 +2,7 @@ package com.blogstack.service.impl;
 
 import com.blogstack.beans.requests.QuestionMasterRequestBean;
 import com.blogstack.beans.responses.PageResponseBean;
+import com.blogstack.beans.responses.QuestionMasterResponseBean;
 import com.blogstack.beans.responses.ServiceResponseBean;
 import com.blogstack.commons.BlogStackMessageConstants;
 import com.blogstack.entities.BlogStackQuestionMaster;
@@ -9,15 +10,18 @@ import com.blogstack.entity.pojo.mapper.IBlogStackQuestionMasterEntityPojoMapper
 import com.blogstack.enums.UuidPrefixEnum;
 import com.blogstack.exceptions.BlogStackCustomException;
 import com.blogstack.exceptions.BlogStackDataNotFoundException;
+import com.blogstack.feign.clients.IBlogStackUserFeignClient;
 import com.blogstack.pojo.entity.mapper.IBlogStackQuestionMasterPojoEntityMapper;
 import com.blogstack.repository.IBlogStackAnswerMasterRepository;
 import com.blogstack.repository.IBlogStackQuestionMasterRepository;
 import com.blogstack.service.IBlogStackQuestionMasterService;
 import com.blogstack.utils.BlogStackCommonUtils;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,17 +34,21 @@ import java.util.Set;
 
 @Service
 public class BlogStackQuestionMasterService implements IBlogStackQuestionMasterService {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogStackQuestionMasterService.class);
 
     @Value("#{'${spring.application.name}'.toUpperCase()}")
     private String springApplicationName;
-
-    @Autowired
     private IBlogStackQuestionMasterRepository blogStackQuestionMasterRepository;
-
-    @Autowired
     private IBlogStackAnswerMasterRepository blogStackAnswerMasterRepository;
+    private IBlogStackUserFeignClient blogStackUserFeignClient;
+    private ObjectMapper objectMapper;
+
+    public BlogStackQuestionMasterService(IBlogStackQuestionMasterRepository blogStackQuestionMasterRepository, IBlogStackAnswerMasterRepository blogStackAnswerMasterRepository, IBlogStackUserFeignClient blogStackUserFeignClient, ObjectMapper objectMapper) {
+        this.blogStackQuestionMasterRepository = blogStackQuestionMasterRepository;
+        this.blogStackAnswerMasterRepository = blogStackAnswerMasterRepository;
+        this.blogStackUserFeignClient = blogStackUserFeignClient;
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public Optional<ServiceResponseBean> addQuestion(QuestionMasterRequestBean questionMasterRequestBean) {
@@ -62,10 +70,21 @@ public class BlogStackQuestionMasterService implements IBlogStackQuestionMasterS
     @Override
     public Optional<ServiceResponseBean> fetchAllQuestion(Integer page, Integer size) {
         Page<BlogStackQuestionMaster> blogStackQuestionMasterPage = this.blogStackQuestionMasterRepository.findAll(PageRequest.of(page, size));
-        LOGGER.debug("BlogStackQuestionMaster :: {}", blogStackQuestionMasterPage);
+        LOGGER.info("BlogStackQuestionMaster :: {}", blogStackQuestionMasterPage);
 
         if (CollectionUtils.isEmpty(blogStackQuestionMasterPage.toList()))
             throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+
+//        List<QuestionMasterResponseBean> questionMasterResponseBeanList = new ArrayList<>();
+//        blogStackQuestionMasterPage.getContent().stream().map(question -> {
+//            JsonNode body = this.objectMapper.convertValue(this.blogStackUserFeignClient.fetchUserById(question.getBsqmUserId()).getBody(), JsonNode.class);
+//            JsonNode jsonNode = body.get("data");
+//            ((ObjectNode ) jsonNode).remove("user_roles");
+//            QuestionMasterResponseBean questionMasterResponseBean = IBlogStackQuestionMasterEntityPojoMapper.mapQuestionMasterEntityPojoMapping.apply(question);
+//            questionMasterResponseBean.setUser(jsonNode);
+//            questionMasterResponseBeanList.add(questionMasterResponseBean);
+//            return questionMasterResponseBean;
+//        }).toList();
 
         return Optional.of(ServiceResponseBean.builder()
                 .status(Boolean.TRUE).data(PageResponseBean.builder().payload(IBlogStackQuestionMasterEntityPojoMapper.mapQuestionMasterEntityListToPojoListMapping.apply(blogStackQuestionMasterPage.toList()))
@@ -80,12 +99,40 @@ public class BlogStackQuestionMasterService implements IBlogStackQuestionMasterS
     @Override
     public Optional<ServiceResponseBean> fetchQuestionById(String questionId) {
         Optional<BlogStackQuestionMaster> blogStackQuestionMasterOptional = this.blogStackQuestionMasterRepository.findByBsqmQuestionId(questionId);
-        LOGGER.warn("BlogStackQuestionMasterOptional :: {}", blogStackQuestionMasterOptional);
+        LOGGER.info("BlogStackQuestionMasterOptional :: {}", blogStackQuestionMasterOptional);
 
-        if (blogStackQuestionMasterOptional.isEmpty())
+        if(blogStackQuestionMasterOptional.isEmpty())
             throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
 
-        return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(IBlogStackQuestionMasterEntityPojoMapper.mapQuestionMasterEntityPojoMapping.apply(blogStackQuestionMasterOptional.get())).build());
+//        JsonNode body = this.objectMapper.convertValue(this.blogStackUserFeignClient.fetchUserById(blogStackQuestionMasterOptional.get().getBsqmUserId()).getBody(), JsonNode.class);
+//        LOGGER.info("body data :: {}", body);
+//
+//        JsonNode jsonNode = body.get("data");
+//        LOGGER.info("JsonNode :: {}", jsonNode);
+//
+//        ((ObjectNode ) jsonNode).remove("user_roles");
+
+        Object blogStackUserResponseBody;
+        try {
+            blogStackUserResponseBody = this.blogStackUserFeignClient.fetchUserById(blogStackQuestionMasterOptional.get().getBsqmUserId()).getBody();
+        }
+        catch (Exception exception){
+            throw new BlogStackDataNotFoundException(BlogStackMessageConstants.INSTANCE.DATA_NOT_FOUND);
+        }
+        LOGGER.info("BlogStackUserResponseBody :: {}", blogStackUserResponseBody);
+
+        JsonNode jsonNode = this.objectMapper.convertValue(blogStackUserResponseBody, JsonNode.class);
+        LOGGER.info("jsonNode :: {}", jsonNode);
+
+        JsonNode blogStackUser = jsonNode.get("data");
+        LOGGER.info("blogStackUser :: {}", blogStackUser);
+
+        ((ObjectNode) blogStackUser).remove("user_roles");
+
+        QuestionMasterResponseBean questionMasterResponseBean = IBlogStackQuestionMasterEntityPojoMapper.mapQuestionMasterEntityPojoMapping.apply(blogStackQuestionMasterOptional.get());
+        questionMasterResponseBean.setUser(blogStackUser);
+
+        return Optional.of(ServiceResponseBean.builder().status(Boolean.TRUE).data(questionMasterResponseBean).build());
     }
 
     @Override
@@ -118,7 +165,6 @@ public class BlogStackQuestionMasterService implements IBlogStackQuestionMasterS
 
     @Override
     public Optional<ServiceResponseBean> fetchAllQuestionsByQuestionIds(Set<String> ids) {
-//        Set<String> setOfQuestionId = questionIdRequestBean.getQuestionIds();
         Optional<Set<BlogStackQuestionMaster>> blogStackQuestionMasterOptionalSet = this.blogStackQuestionMasterRepository.findByBsqmQuestionIdIn(ids);
         LOGGER.warn("BlogStackQuestionMasterOptionalSet :: {}", blogStackQuestionMasterOptionalSet);
 

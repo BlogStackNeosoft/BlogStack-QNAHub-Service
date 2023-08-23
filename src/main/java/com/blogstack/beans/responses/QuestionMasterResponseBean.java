@@ -1,11 +1,9 @@
 package com.blogstack.beans.responses;
 
 import com.blogstack.commons.BlogStackCommonConstants;
-import com.blogstack.entities.BlogStackAnswerMaster;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +29,8 @@ public class QuestionMasterResponseBean {
 
     @JsonProperty(value = "user_id")
     private String userId;
+
+    private Object user;
 
     @JsonProperty(value = "code_snippet")
     private String codeSnippet;

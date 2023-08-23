@@ -12,5 +12,7 @@ public enum BlogStackCommonConstants {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+    public static final String DOB_DATE_FORMAT = "yyyy-MM-dd";
+
     public final String SERVICE_STRING = "Service";
 }
